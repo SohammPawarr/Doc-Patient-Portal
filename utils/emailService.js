@@ -2,14 +2,22 @@ const nodemailer = require('nodemailer');
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
 
-// Create reusable transporter
+// Create reusable transporter with explicit SMTP settings
 const createTransporter = () => {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // Use TLS
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_APP_PASSWORD
-    }
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 };
 
